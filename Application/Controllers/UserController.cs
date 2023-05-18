@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
-using Sat.Recruitment.Api.Model;
+using Domain.Model;
+using Infrastructure.Persistence;
 
-namespace Sat.Recruitment.Api.Controllers
+namespace Application.Controllers
 {
     public class Result
     {
@@ -87,7 +90,7 @@ namespace Sat.Recruitment.Api.Controllers
             }
 
 
-            var reader = ReadUsersFromFile();
+            var reader = UserPersistence.ReadUsersFromFile();
 
             //Normalize email
             var aux = newUser.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
@@ -190,5 +193,4 @@ namespace Sat.Recruitment.Api.Controllers
                 errors = errors + " The phone is required";
         }
     }
-  
 }

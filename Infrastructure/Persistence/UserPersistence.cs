@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Sat.Recruitment.Api.Controllers
+namespace Infrastructure.Persistence
 {
-    public partial class UsersController
+    public static class UserPersistence
     {
-        private StreamReader ReadUsersFromFile()
+        public static StreamReader ReadUsersFromFile()
         {
             var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";
 
