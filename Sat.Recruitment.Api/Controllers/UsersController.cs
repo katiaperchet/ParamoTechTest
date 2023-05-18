@@ -26,7 +26,7 @@ namespace Sat.Recruitment.Api.Controllers
 
         [HttpPost]
         [Route("/create-user")]
-        public async Task<Result> CreateUser(string name, string email, string address, string phone, string userType, string money)
+        public async Task<Result> CreateUser(string? name, string? email, string address, string phone, string userType, string money)
         {
             var errors = "";
 
