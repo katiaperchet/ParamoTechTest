@@ -16,43 +16,39 @@ namespace Application
 		{
             List<User> _users = new List<User>();
             User newUser = new User(name, email, address, phone, userType, decimal.Parse(money));
+            decimal percentageAdd=0;
+
             if (newUser.UserType == "Normal")
             {
                 if (newUser.Money > 100)
                 {
-                    var percentage = Convert.ToDecimal(0.12);
                     //If new user is normal and has more than USD100
-                    var gif = newUser.Money * percentage;
-                    newUser.Money = newUser.Money + gif;
+                    percentageAdd = Convert.ToDecimal(0.12);
                 }
-                if (newUser.Money < 100)
+                else
                 {
                     if (newUser.Money > 10)
                     {
-                        var percentage = Convert.ToDecimal(0.8);
-                        var gif = newUser.Money * percentage;
-                        newUser.Money = newUser.Money + gif;
+                        percentageAdd = Convert.ToDecimal(0.8);
                     }
                 }
             }
-            if (newUser.UserType == "SuperUser")
+            else if (newUser.UserType == "SuperUser")
             {
                 if (newUser.Money > 100)
                 {
-                    var percentage = Convert.ToDecimal(0.20);
-                    var gif = newUser.Money * percentage;
-                    newUser.Money = newUser.Money + gif;
+                    percentageAdd = Convert.ToDecimal(0.20);
                 }
             }
-            if (newUser.UserType == "Premium")
+            else if (newUser.UserType == "Premium")
             {
                 if (newUser.Money > 100)
                 {
-                    var gif = newUser.Money * 2;
-                    newUser.Money = newUser.Money + gif;
+                    percentageAdd = Convert.ToDecimal(2);
                 }
             }
-
+            var gif = newUser.Money * percentageAdd;
+            newUser.Money = newUser.Money + gif;
 
             var reader = UserPersistence.ReadUsersFromFile();
 
