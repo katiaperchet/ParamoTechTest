@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Api
@@ -25,6 +26,8 @@ namespace Sat.Recruitment.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var assembly = AppDomain.CurrentDomain.GetAssemblies();//.Where(x => x.GetName().Name == "Presentation");
+            //services.AddMvc().AddApplicationPart(assembly).AddControllersAsServices();
             services.AddControllers();
             services.AddSwaggerGen();
         }
