@@ -37,8 +37,7 @@ namespace Presentation.Controllers
                 };
 			else
 			{
-                User newUser = new User(name,email,address,phone,userType,decimal.Parse(money));
-                UserLogic.CreateUserLogic(newUser);
+                UserLogic.CreateUserLogic(name, email, address, phone, userType, money);
 			}
             return null;
         }

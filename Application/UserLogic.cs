@@ -12,9 +12,10 @@ namespace Application
     public class UserLogic
 	{
         
-        public static Result CreateUserLogic(User newUser)
+        public static Result CreateUserLogic(string name, string email, string address, string phone, string userType, string money)
 		{
             List<User> _users = new List<User>();
+            User newUser = new User(name, email, address, phone, userType, decimal.Parse(money));
             if (newUser.UserType == "Normal")
             {
                 if (newUser.Money > 100)
