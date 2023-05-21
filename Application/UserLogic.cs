@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,88 +21,60 @@ namespace Application
 
             if (newUser.UserType == "Normal")
             {
-                if (newUser.Money > 100)
-                {
-                    //If new user is normal and has more than USD100
-                    percentageAdd = Convert.ToDecimal(0.12);
-                }
-                else
-                {
-                    if (newUser.Money > 10)
-                    {
-                        percentageAdd = Convert.ToDecimal(0.8);
-                    }
-                }
+                 //If new user is normal and has more than USD100
+                 percentageAdd = newUser.Money > 100 ? Convert.ToDecimal(0.12) : newUser.Money > 10 ? Convert.ToDecimal(0.8) : 0 ;
+                
             }
-            else if (newUser.UserType == "SuperUser")
+            else if (newUser.UserType == "SuperUser" && newUser.Money > 100)
             {
-                if (newUser.Money > 100)
-                {
-                    percentageAdd = Convert.ToDecimal(0.20);
-                }
+                percentageAdd = Convert.ToDecimal(0.20);
+                
             }
-            else if (newUser.UserType == "Premium")
+            else if (newUser.UserType == "Premium" && newUser.Money > 100)
             {
-                if (newUser.Money > 100)
-                {
-                    percentageAdd = Convert.ToDecimal(2);
-                }
+                percentageAdd = Convert.ToDecimal(2);        
             }
             var gif = newUser.Money * percentageAdd;
             newUser.Money = newUser.Money + gif;
 
-            var reader = UserPersistence.ReadUsersFromFile();
-
-            //Normalize email
-            var aux = newUser.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
-
-            aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
-
-            newUser.Email = string.Join("@", new string[] { aux[0], aux[1] });
-
-            while (reader.Peek() >= 0)
+            using (StreamReader reader = UserPersistence.ReadUsersFromFile())
             {
-                var line = reader.ReadLineAsync().Result;
-                var user = new User
+                //Normalize email
+                var emailParts = newUser.Email.Split('@');
+                var atIndex = emailParts[0].IndexOf("+");
+                emailParts[0] = atIndex < 0 ? emailParts[0].Replace(".", "") : emailParts[0].Replace(".", "").Remove(atIndex);
+                newUser.Email = string.Join("@", emailParts);
+
+                while (reader.Peek() >= 0)
                 {
-                    Name = line.Split(',')[0].ToString(),
-                    Email = line.Split(',')[1].ToString(),
-                    Phone = line.Split(',')[2].ToString(),
-                    Address = line.Split(',')[3].ToString(),
-                    UserType = line.Split(',')[4].ToString(),
-                    Money = decimal.Parse(line.Split(',')[5].ToString()),
-                };
-                _users.Add(user);
+                    var line = reader.ReadLineAsync().Result;
+                    var user = new User
+                    {
+                        Name = line.Split(',')[0].ToString(),
+                        Email = line.Split(',')[1].ToString(),
+                        Phone = line.Split(',')[2].ToString(),
+                        Address = line.Split(',')[3].ToString(),
+                        UserType = line.Split(',')[4].ToString(),
+                        Money = decimal.Parse(line.Split(',')[5].ToString()),
+                    };
+                    _users.Add(user);
+                }
             }
-            reader.Close();
             try
             {
                 var isDuplicated = false;
                 foreach (var user in _users)
                 {
-                    if (user.Email == newUser.Email
-                        ||
-                        user.Phone == newUser.Phone)
-                    {
-                        isDuplicated = true;
-                    }
-                    else if (user.Name == newUser.Name)
-                    {
-                        if (user.Address == newUser.Address)
-                        {
-                            isDuplicated = true;
-                            throw new Exception("User is duplicated");
-                        }
-
-                    }
+                   if (_users.Exists(x=>x.Email == newUser.Email && x.Phone== newUser.Phone || x.Name == newUser.Name && x.Address == newUser.Address))
+                   {
+                       isDuplicated = true;
+                   }               
                 }
 
                 if (!isDuplicated)
                 {
+                    UserPersistence.SaveUserToFile(newUser.ToString());
                     Debug.WriteLine("User Created");
-
                     return new Result()
                     {
                         IsSuccess = true,
@@ -110,30 +83,20 @@ namespace Application
                 }
                 else
                 {
-                    Debug.WriteLine("The user is duplicated");
-
-                    return new Result()
-                    {
-                        IsSuccess = false,
-                        Errors = "The user is duplicated"
-                    };
+                    //Debug.WriteLine("The user is duplicated");
+                    throw new Exception("User is duplicated");
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 Debug.WriteLine("The user is duplicated");
                 return new Result()
                 {
                     IsSuccess = false,
-                    Errors = "The user is duplicated"
+                    Errors = ex.Message
                 };
             }
 
-            return new Result()
-            {
-                IsSuccess = true,
-                Errors = "User Created"
-            };
         }
 	}
 }
