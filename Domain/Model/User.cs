@@ -28,5 +28,10 @@ namespace Domain.Model
         public string Phone { get; set; }
         public string UserType { get; set; }
         public decimal Money { get; set; }
-    }
+
+		public override string ToString()
+		{
+			return Name + ","+Email+","+Phone+","+Address+","+UserType+","+ Money.ToString();
+		}
+	}
 }
