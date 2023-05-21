@@ -18,5 +18,23 @@ namespace Infrastructure.Persistence
             StreamReader reader = new StreamReader(fileStream);
             return reader;
         }
+        public static bool SaveUserToFile(string user)
+        {
+            var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";
+
+			try
+			{
+                FileStream fileStream = new FileStream(path, FileMode.Append);
+                using(StreamWriter writer = new StreamWriter(fileStream))
+				{
+                    writer.WriteLine(user);                
+				}
+                return true;
+            }
+			catch (Exception)
+			{
+                return false;
+			}
+        }
     }
 }
