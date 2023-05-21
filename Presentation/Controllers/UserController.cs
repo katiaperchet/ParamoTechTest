@@ -22,41 +22,39 @@ namespace Presentation.Controllers
         {
         }
 
-        [HttpPost]
-        [Route("/create-user")]
-        public async Task<Result> CreateUser([FromQuery]string? name, [FromQuery]string? email, [FromQuery]string? address, [FromQuery]string? phone, [FromQuery]string? userType, [FromQuery]string? money)
-        {
-            var errors = "";
-            ValidateErrors(name, email, address, phone, ref errors);
+		[HttpPost]
+		[Route("/create-user")]
+		public Result CreateUser(string name, string email, string address, string phone, string userType, string money)
+		{
+			var errors = "";
+			ValidateErrors(name, email, address, phone, ref errors);
 
-            if (errors != null && errors != "")
+            if (!string.IsNullOrEmpty(errors))
+            {
                 return new Result()
                 {
                     IsSuccess = false,
                     Errors = errors
                 };
-			else
-			{
-                UserLogic.CreateUserLogic(name, email, address, phone, userType, money);
-			}
-            return null;
-        }
+            }
+            else
+            {
+                return UserLogic.CreateUserLogic(name, email, address, phone, userType, money);
+            }
+			
+		}
 
         //Validate errors
         private void ValidateErrors(string name, string email, string address, string phone, ref string errors)
         {
-            if (name == null)
-                //Validate if Name is null
-                errors = "The name is required";
-            if (email == null)
-                //Validate if Email is null
-                errors = errors + " The email is required";
-            if (address == null)
-                //Validate if Address is null
-                errors = errors + " The address is required";
-            if (phone == null)
-                //Validate if Phone is null
-                errors = errors + " The phone is required";
+            if (string.IsNullOrEmpty(name))
+                errors += "The name is required-";
+            if (string.IsNullOrEmpty(email))
+                errors += " The email is required-";
+            if (string.IsNullOrEmpty(address))
+                errors += " The address is required-";
+            if (string.IsNullOrEmpty(phone))
+                errors += " The phone is required-";
         }
     }
 }
