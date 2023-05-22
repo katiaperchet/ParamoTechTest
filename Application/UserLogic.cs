@@ -74,7 +74,6 @@ namespace Application
                 if (!isDuplicated)
                 {
                     UserPersistence.SaveUserToFile(newUser.ToString());
-                    Debug.WriteLine("User Created");
                     return new Result()
                     {
                         IsSuccess = true,
@@ -83,13 +82,11 @@ namespace Application
                 }
                 else
                 {
-                    //Debug.WriteLine("The user is duplicated");
-                    throw new Exception("User is duplicated");
+                    throw new Exception("The user is duplicated");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("The user is duplicated");
                 return new Result()
                 {
                     IsSuccess = false,
