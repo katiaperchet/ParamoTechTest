@@ -9,9 +9,9 @@ namespace Application
 {
 	public class FileNameProvider : IFileName
 	{
-		public FileNameProvider()
+		public FileNameProvider(string fileName)
 		{
-			
+			_fileName = fileName;
 		}
 
 		private string _fileName;

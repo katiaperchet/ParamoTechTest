@@ -33,7 +33,12 @@ namespace Sat.Recruitment.Api
             //services.AddMvc().AddApplicationPart(assembly).AddControllersAsServices();
             services.AddControllers();
             services.AddSwaggerGen();
-            services.AddScoped<IFileName, FileNameProvider>();
+            services.AddScoped<IFileName>(provider =>
+            {
+                string fileName = "/Files/Users.txt"; // Specify the desired file name
+                return new FileNameProvider(fileName);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
