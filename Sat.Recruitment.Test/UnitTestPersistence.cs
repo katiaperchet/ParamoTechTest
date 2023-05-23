@@ -15,9 +15,10 @@ namespace Sat.Recruitment.Test
         public void ReadUsersFromFile_ReturnsStreamReader()
         {
             // Arrange
-            var expectedPath = Path.Combine(Directory.GetCurrentDirectory(), "Files/Users.txt");
+            var expectedFileName = "/Files/Users.txt";
+            var expectedPath = Path.Combine(Directory.GetCurrentDirectory(), "/Files/Users.txt");
             // Act
-            var result = UserPersistence.ReadUsersFromFile();
+            var result = UserPersistence.ReadUsersFromFile(expectedFileName);
             // Assert
             Assert.NotNull(result);
             Assert.IsType<StreamReader>(result);
@@ -29,9 +30,10 @@ namespace Sat.Recruitment.Test
             // Arrange
             var user = "Juan,Juan@gmail.com,+549115412,Paraguay 2464,Normal,1234";
             // Act
-            var result = UserPersistence.SaveUserToFile(user);
+            var result = UserPersistence.SaveUserToFile(user, "/Files/UsersTest2.txt");
             // Assert
             Assert.True(result);
+            File.Delete(Directory.GetCurrentDirectory()+"/Files/UsersTest2.txt");
         }
 
 

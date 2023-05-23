@@ -1,10 +1,11 @@
 using System;
 using System.Dynamic;
-
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 
 using Presentation.Controllers;
-
+using Application.Interfaces;
+using Application;
 using Xunit;
 
 namespace Sat.Recruitment.Test
@@ -15,20 +16,25 @@ namespace Sat.Recruitment.Test
         [Fact]
         public void CreateUser_SuccesfulResult()
         {
-           //Arrange
-           var userController = new UsersController();
+            //Arrange
+            IFileName fileName = new FileNameProvider();
+            fileName.setFileName("/Files/Users.txt");
+            var userController = new UsersController(fileName);
            //Act
-           var result = userController.CreateUser("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", "Normal", "124");
+           var result = userController.CreateUser("John", "john@example.com", "Av. John G", "+349 123455", "Normal", "1243");
            //Assert
            Assert.True(result.IsSuccess);
            Assert.Equal("User Created", result.Errors);
+           File.Delete(Directory.GetCurrentDirectory()+"/Files/UsersTest3.txt");
         }
 
         [Fact]
         public void CreateUser_DuplicatedField_FailedResult()
         {
             //Arrange
-            var userController = new UsersController();
+            IFileName fileName = new FileNameProvider();
+            fileName.setFileName("/Files/UsersTest.txt");
+            var userController = new UsersController(fileName);
             //Act
             var result = userController.CreateUser("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", "Normal", "124");
             //Assert
@@ -40,7 +46,9 @@ namespace Sat.Recruitment.Test
         public void CreateUser_BlankField_FailedResult()
         {
             //Arrange
-            var userController = new UsersController();
+            IFileName fileName = new FileNameProvider();
+            fileName.setFileName("/Files/UsersTest.txt");
+            var userController = new UsersController(fileName);
             //Act
             var result = userController.CreateUser("", "", "", "", "", "");
             //Assert
