@@ -12,6 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Application.Interfaces;
+using Application;
+
 namespace Sat.Recruitment.Api
 {
     public class Startup
@@ -30,6 +33,7 @@ namespace Sat.Recruitment.Api
             //services.AddMvc().AddApplicationPart(assembly).AddControllersAsServices();
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddScoped<IFileName, FileNameProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
