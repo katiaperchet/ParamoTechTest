@@ -31,7 +31,7 @@ namespace Domain.Model
 
 		public override string ToString()
 		{
-			return Name + ","+Email+","+Phone+","+Address+","+UserType+","+ Money.ToString();
+			return $"{Name},{Email},{Phone},{Address},{UserType}, {Money.ToString()}";
 		}
 	}
 }

@@ -17,8 +17,7 @@ namespace Sat.Recruitment.Test
         public void CreateUser_SuccesfulResult()
         {
             //Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/Users.txt");
+            IFileName fileName = new FileNameProvider("/Files/Users.txt");
             var userController = new UsersController(fileName);
            //Act
            var result = userController.CreateUser("John", "john@example.com", "Av. John G", "+349 123455", "Normal", "1243");
@@ -32,8 +31,7 @@ namespace Sat.Recruitment.Test
         public void CreateUser_DuplicatedField_FailedResult()
         {
             //Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest.txt");
             var userController = new UsersController(fileName);
             //Act
             var result = userController.CreateUser("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", "Normal", "124");
@@ -46,8 +44,7 @@ namespace Sat.Recruitment.Test
         public void CreateUser_BlankField_FailedResult()
         {
             //Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest.txt");
             var userController = new UsersController(fileName);
             //Act
             var result = userController.CreateUser("", "", "", "", "", "");

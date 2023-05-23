@@ -12,7 +12,7 @@ using Infrastructure.Persistence;
 
 namespace Application
 {
-    public class UserLogic
+    public class UserLogic 
 	{
         private readonly IFileName provider;
         public UserLogic(IFileName fileName)
@@ -23,26 +23,27 @@ namespace Application
 		public Result CreateUserLogic(string name, string email, string address, string phone, string userType, string money)
 		{
             List<User> _users = new List<User>();
-            User newUser = new User(name, email, address, phone, userType, decimal.Parse(money));
-            decimal percentageAdd=0;
+            User newUser = null;
+            //decimal percentageAdd=0;
 
-            if (newUser.UserType == "Normal")
+            if (userType == "Normal")
             {
-                 //If new user is normal and has more than USD100
-                 percentageAdd = newUser.Money > 100 ? Convert.ToDecimal(0.12) : newUser.Money > 10 ? Convert.ToDecimal(0.8) : 0 ;
+                newUser = new UserNormal(name, email, address, phone, userType, decimal.Parse(money)); 
+                //If new user is normal and has more than USD100
+                 //percentageAdd = newUser.Money > 100 ? Convert.ToDecimal(0.12) : newUser.Money > 10 ? Convert.ToDecimal(0.8) : 0 ;
                 
             }
-            else if (newUser.UserType == "SuperUser" && newUser.Money > 100)
+            else if (userType == "SuperUser")
             {
-                percentageAdd = Convert.ToDecimal(0.20);
-                
+                newUser = new UserSuper(name, email, address, phone, userType, decimal.Parse(money));
+
             }
-            else if (newUser.UserType == "Premium" && newUser.Money > 100)
+            else if (userType == "Premium")
             {
-                percentageAdd = Convert.ToDecimal(2);        
+                newUser = new UserPremium(name, email, address, phone, userType, decimal.Parse(money));
+
             }
-            var gif = newUser.Money * percentageAdd;
-            newUser.Money = newUser.Money + gif;
+            
 
             using (StreamReader reader = UserPersistence.ReadUsersFromFile(provider.GetFileName()))
             {
@@ -103,5 +104,6 @@ namespace Application
             }
 
         }
+
 	}
 }
