@@ -5,15 +5,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using Domain.Model;
 using Infrastructure.Persistence;
+
 
 namespace Application
 {
     public class UserLogic
 	{
-        
-        public static Result CreateUserLogic(string name, string email, string address, string phone, string userType, string money)
+        private readonly IFileName provider;
+        public UserLogic(IFileName fileName)
+		{
+            provider = fileName;
+		}
+
+		public Result CreateUserLogic(string name, string email, string address, string phone, string userType, string money)
 		{
             List<User> _users = new List<User>();
             User newUser = new User(name, email, address, phone, userType, decimal.Parse(money));
@@ -37,7 +44,7 @@ namespace Application
             var gif = newUser.Money * percentageAdd;
             newUser.Money = newUser.Money + gif;
 
-            using (StreamReader reader = UserPersistence.ReadUsersFromFile())
+            using (StreamReader reader = UserPersistence.ReadUsersFromFile(provider.GetFileName()))
             {
                 //Normalize email
                 var emailParts = newUser.Email.Split('@');
@@ -68,12 +75,13 @@ namespace Application
                    if (_users.Exists(x=>x.Email == newUser.Email && x.Phone== newUser.Phone || x.Name == newUser.Name && x.Address == newUser.Address))
                    {
                        isDuplicated = true;
+                        break;
                    }               
                 }
 
                 if (!isDuplicated)
                 {
-                    UserPersistence.SaveUserToFile(newUser.ToString());
+                    UserPersistence.SaveUserToFile(newUser.ToString(), provider.GetFileName() );
                     return new Result()
                     {
                         IsSuccess = true,
