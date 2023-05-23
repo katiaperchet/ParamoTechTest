@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Domain.Model;
 using Infrastructure.Persistence;
 using Application;
+using Application.Interfaces;
 
 namespace Presentation.Controllers
 {
@@ -17,9 +18,10 @@ namespace Presentation.Controllers
     [Route("[controller]")]
     public partial class UsersController : ControllerBase
     {
- 
-        public UsersController()
+        private readonly UserLogic logic;
+        public UsersController(IFileName fileName)
         {
+            logic = new UserLogic(fileName);
         }
 
 		[HttpPost]
@@ -39,7 +41,7 @@ namespace Presentation.Controllers
             }
             else
             {
-                return UserLogic.CreateUserLogic(name, email, address, phone, userType, money);
+                return logic.CreateUserLogic(name, email, address, phone, userType, money);
             }
 			
 		}

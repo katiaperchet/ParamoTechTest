@@ -9,18 +9,18 @@ namespace Infrastructure.Persistence
 {
     public static class UserPersistence
     {
-        public static StreamReader ReadUsersFromFile()
+        public static StreamReader ReadUsersFromFile(string filePath)
         {
-            var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";
+            var path = Directory.GetCurrentDirectory() + filePath;
 
-            FileStream fileStream = new FileStream(path, FileMode.Open);
+            FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate);
 
             StreamReader reader = new StreamReader(fileStream);
             return reader;
         }
-        public static bool SaveUserToFile(string user)
+        public static bool SaveUserToFile(string user, string filePath)
         {
-            var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";
+            var path = Directory.GetCurrentDirectory() +filePath;
 
 			try
 			{
@@ -31,8 +31,9 @@ namespace Infrastructure.Persistence
 				}
                 return true;
             }
-			catch (Exception)
+			catch (Exception ex)
 			{
+                var m = ex.Message; 
                 return false;
 			}
         }
