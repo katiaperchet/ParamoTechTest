@@ -16,8 +16,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_NormalUser_LessThan10()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest1.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest1.txt");
             var logic = new UserLogic(fileName);
             string name = "Juan";
             string email = "Juan@hotmail.com";
@@ -39,8 +38,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_NormalUser_Between10And100()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest2.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest2.txt");
             var logic = new UserLogic(fileName);
             string name = "Juana";
             string email = "juana@hotmail.com";
@@ -62,8 +60,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_NormalUser_MoreThan100()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest3.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest3.txt");
             var logic = new UserLogic(fileName);
             string name = "Nicolas";
             string email = "nico@gmail.com";
@@ -85,8 +82,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_SuperUser_MoreThan100()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest4.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest4.txt");
             var logic = new UserLogic(fileName);
             string name = "Sam";
             string email = "sam@gmail.com";
@@ -108,8 +104,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_PremiumUser_MoreThan100()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest5.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest5.txt");
             var logic = new UserLogic(fileName);
             string name = "Maria";
             string email = "maria@hotmail.com";
@@ -131,8 +126,7 @@ namespace Sat.Recruitment.Test
         public void CreateUserLogic_DuplicateUser()
         {
             // Arrange
-            IFileName fileName = new FileNameProvider();
-            fileName.setFileName("/Files/UsersTest.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest.txt");
             var logic = new UserLogic(fileName);
             string name = "Agustina";
             string email = "Agustina@gmail.com";

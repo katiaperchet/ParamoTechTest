@@ -17,7 +17,7 @@ namespace Sat.Recruitment.Test
         public void CreateUser_SuccesfulResult()
         {
             //Arrange
-            IFileName fileName = new FileNameProvider("/Files/Users.txt");
+            IFileName fileName = new FileNameProvider("/Files/UsersTest3.txt");
             var userController = new UsersController(fileName);
            //Act
            var result = userController.CreateUser("John", "john@example.com", "Av. John G", "+349 123455", "Normal", "1243");
